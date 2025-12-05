@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+status=$(bluetoothctl show | grep Powered | awk '{print $2}')
+
+case $status in
+    "no")
+        #echo "󰂲 off"
+        echo "^fg(#b4befe)󰂲 ^fg()off"
+        ;;
+    "yes")
+       if [ "$(bluetoothctl devices Connected 2>/dev/null)" ]; then
+           #echo "󰂱 $(bluetoothctl devices Connected | awk '{print $3}')"
+           echo "^fg(#b4befe)󰂱 ^fg() $(bluetoothctl devices Connected | awk '{print $3}')"
+            else
+            #echo "󰂯 "
+            echo "^fg(#b4befe)󰂯 fg()"
+       fi
+        ;;
+esac

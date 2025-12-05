@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+show_bemenu() {
+bemenu \
+  --center\
+  -l 5 \
+  --ignorecase \
+  -H 26 \
+  --width-factor 0.15 \
+  --binding 'vim' \
+  --vim-esc-exits \
+  --monitor '1' \
+  --hp '6' \
+  --fn 'Nerd Font Mono' \
+  --tb '#1e1e2e' \
+  --fb '#1e1e2e' \
+  --nb '#1e1e2e' \
+  --hb '#1e1e2e' \
+  --fbb '#1e1e2e' \
+  --ab '#1e1e2e' \
+  --sb '#1e1e2e' \
+  --ff '#f5c2e7' \
+  --tf '#7287fd' \
+  --sf '#7287fd' \
+  --hf '#7287fd'
+  #--vim-normal-mode \
+}
+
+case "$(printf "open bluetoothctl\nconnect to soundbar\noff\ncancel" | show_bemenu)" in
+    "open bluetoothctl")
+    bluetoothctl power on && pkill -SIGRTMIN+13 someblocks &&
+    notify-send "usage: run 'devices Connected' to list currently connected devices'" &&
+    notify-send "usage: run 'devices Paired' to list all Paired devices'" &&
+    notify-send "usage: run 'scan on' and then 'connect <MAC_ADDRESS>\n'" &&
+    foot --app-id='float-menu' -w 800x500 bluetoothctl &&
+    pkill -SIGRTMIN+13 someblocks
+    ;;
+    "connect to soundbar")
+    bluetoothctl power on &>/dev/null &&
+    bluetoothctl connect 00:19:01:C5:3B:EC  &>/dev/null &&
+    pkill -SIGRTMIN+13 someblocks
+    ;;
+    off) 
+        bluetoothctl power off &&
+        notify-send "Changing power off succeeded" -t 2000 && 
+        pkill -SIGRTMIN+13 someblocks
+    ;;
+    *)
+        exit 1 ;;
+esac
+

@@ -12,5 +12,5 @@ clean="$(echo $perc | sed 's/~//')" # remove ~ tilde with sed
 #printf "^lm(foot -a float-menu -w 800x600 htop)%.2f%%\n^lm()" "$clean" # round to 2 decimal places, add % sign (with %%)
 
 # text color
-printf "^fg(#94e2d5) ^fg() %.2f%%\n" "$clean" # round to 2 decimal places, add % sign (with %%)
+printf "^fg(#b4befe) ^fg() %.2f%%\n" "$clean" # round to 2 decimal places, add % sign (with %%)
 
