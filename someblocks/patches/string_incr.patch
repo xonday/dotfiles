@@ -1,0 +1,11 @@
+--- someblocks.c	2025-12-05 20:43:10.348842054 +0100
++++ someblocks.c.orig	2025-12-05 20:44:42.215359661 +0100
+@@ -14,7 +14,7 @@
+ #define SIGMINUS		SIGRTMIN
+ #endif
+ #define LENGTH(X)               (sizeof(X) / sizeof (X[0]))
+-#define CMDLENGTH		100
++#define CMDLENGTH		50
+ #define MIN( a, b ) ( ( a < b) ? a : b )
+ #define STATUSLENGTH (LENGTH(blocks) * CMDLENGTH + 1)
+ 

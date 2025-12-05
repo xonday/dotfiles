@@ -3,14 +3,13 @@ static const Block blocks[] = {
 	/*Icon*/	/*Command*/		/*Update Interval*/	/*Update Signal*/
 	/*{"", "slstatus -s",				5,		0},*/
 	{"", "sb-internet",				60,		12},
-	{"󰻠 ", "top -bn 2 -d 0.01 | grep '^%Cpu' | tail -n 1 | gawk '{print $2+$4+$6\"%\"}'", 30, 0},
+	{"^fg(#b4befe)󰻠 ^fg()", "top -bn 2 -d 0.01 | grep '^%Cpu' | tail -n 1 | gawk '{print $2+$4+$6\"%\"}'", 30, 0},
 	/*{" Mem ", "free -h | awk '/^Mem/ { print $3\"/\"$2 }' | sed s/i//g",	30,		0},*/
-	{"", "someblocks-click-test.sh",					0,		0},
-	{" Mem ", "memory-perc",	30,		0},
-	{" ", "/home/alex/dotfiles/someblocks/scripts/battery.sh",		60,		0},
+	{"", "memory-perc-sb",	30,		0},
+	{" ", "sb-battery",		60,		0},
 	{"", "sb-brightness",				0,		10},
 	{"", "sb-volume",				0,		11},
-	{"", "date '+%a, %d %b %H:%M:%S'",					1,		0},
+	{"", "calendar-sb",					1,		0},
 	
 	/* Updates whenever "pkill -SIGRTMIN+10 someblocks" is ran */
 	/* {"", "date '+%a, %d %b %H:%M'",					0,		10}, */
