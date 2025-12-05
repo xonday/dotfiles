@@ -1,0 +1,8 @@
+#!/bin/bash
+#[ "$(ps aux | grep gammastep | head -n 1 | cut -d " " -f 29)" = 'gammastep' ] && pkill gammastep >/dev/null || gammastep -l 41:12 -O 3000 >/dev/null &
+
+if pgrep -x "gammastep" > /dev/null; then
+    pkill -x gammastep
+else
+    gammastep -l 41:12 -O 3000 >/dev/null &
+fi

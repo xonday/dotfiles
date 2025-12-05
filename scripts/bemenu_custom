@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+bemenu \
+  -H 26 \
+  -p 'Run' \
+  --ignorecase \
+  --monitor '1' \
+  --hp '6' \
+  --fn 'Nerd Font Mono' \
+  --tb '#1e1e2e' \
+  --fb '#1e1e2e' \
+  --nb '#1e1e2e' \
+  --hb '#1e1e2e' \
+  --fbb '#1e1e2e' \
+  --ab '#1e1e2e' \
+  --sb '#1e1e2e' \
+  --ff '#f5c2e7' \
+  --tf '#7287fd' \
+  --sf '#7287fd' \
+  --hf '#7287fd'

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+show_bemenu() {
+bemenu \
+  --center\
+  -l 5 \
+  --ignorecase \
+  -H 26 \
+  --width-factor 0.12 \
+  --binding 'vim' \
+  --vim-esc-exits \
+  --monitor '1' \
+  --hp '6' \
+  --fn 'Nerd Font Mono' \
+  --tb '#1e1e2e' \
+  --fb '#1e1e2e' \
+  --nb '#1e1e2e' \
+  --hb '#1e1e2e' \
+  --fbb '#1e1e2e' \
+  --ab '#1e1e2e' \
+  --sb '#1e1e2e' \
+  --ff '#f5c2e7' \
+  --tf '#7287fd' \
+  --sf '#7287fd' \
+  --hf '#7287fd'
+  #--vim-normal-mode \
+}
+
+#bemenu -i -c -W 0.1 -l 4
+case "$(printf "cancel\nshutdown\nreboot\nsuspend\nhibernate" | show_bemenu )" in
+    cancel) exit ;;
+	shutdown) systemctl poweroff -i ;;
+	reboot) systemctl reboot -i ;;
+	suspend) systemctl hybrid-sleep -i ;; #suspend-then-hibernate -i ;;
+	hibernate) systemctl hibernate -i ;;
+	*) exit 1 ;;
+esac
