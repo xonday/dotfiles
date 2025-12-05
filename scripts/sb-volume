@@ -16,7 +16,7 @@ esac
 vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
 
 # If muted, print 󰝟 and exit.
-[ "$vol" != "${vol%\[MUTED\]}" ] && echo "󰝟 " && exit
+[ "$vol" != "${vol%\[MUTED\]}" ] && echo "^fg(#b4befe)󰝟 ^fg()" && exit
 
 vol="${vol#Volume: }"
 
@@ -33,7 +33,8 @@ case 1 in
 	$((vol >= 70)) ) icon="󰕾 " ;;
 	$((vol >= 30)) ) icon="󰖀 " ;;
 	$((vol >= 1)) ) icon="󰕿 " ;;
-	* ) echo 󰝟 && exit ;;
+	#* ) echo 󰝟 && exit ;;
+    * ) echo "^fg(#b4befe)󰝟 ^fg()" && exit ;;
 esac
 
 #echo "$icon$vol%"
