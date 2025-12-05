@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+free="$(free --mebi | grep Mem | awk '{print $3}')"
+total="$(free --mebi | grep Mem | awk '{print $2}')"
+
+perc="$(calc "$free / $total * 100")" # perform calculation
+clean="$(echo $perc | sed 's/~//')" # remove ~ tilde with sed
+#printf "%.2f%%" "$clean" # round to 2 decimal places, add % sign (with %%)
+
+# make it clickable in the bar (dwl needs to have ipc patched and dwlb needs to have ipc flag enabled)
+#-a -> --app-id -> I've set a rule for this app id in dwl to always spawn floating
+#printf "^lm(foot -a float-menu -w 800x600 htop)%.2f%%\n^lm()" "$clean" # round to 2 decimal places, add % sign (with %%)
+
+# text color
+printf "^fg(#94e2d5) ^fg() %.2f%%\n" "$clean" # round to 2 decimal places, add % sign (with %%)
+

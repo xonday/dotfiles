@@ -1,0 +1,51 @@
+#!/bin/env bash
+
+show_bemenu() {
+bemenu \
+  --center\
+  -l 5 \
+  --ignorecase \
+  -H 26 \
+  --width-factor 0.15 \
+  --binding 'vim' \
+  --vim-esc-exits \
+  --monitor '1' \
+  --hp '6' \
+  --fn 'Nerd Font Mono' \
+  --tb '#1e1e2e' \
+  --fb '#1e1e2e' \
+  --nb '#1e1e2e' \
+  --hb '#1e1e2e' \
+  --fbb '#1e1e2e' \
+  --ab '#1e1e2e' \
+  --sb '#1e1e2e' \
+  --ff '#f5c2e7' \
+  --tf '#7287fd' \
+  --sf '#7287fd' \
+  --hf '#7287fd'
+  #--vim-normal-mode \
+}
+
+screenshot_dir="$HOME/Pictures"
+unique=$(date '+%Y.%m.%d_%H%M%S.png')
+
+#case $1 in
+case "$(printf "area\nscreen\ncolor picker\ncancel" | show_bemenu )" in
+    area)
+        # selection
+        grim -g "$(slurp 2>/dev/null)" $screenshot_dir/$unique 2>/dev/null &&
+        wl-copy < $screenshot_dir/$unique
+        ;;
+    screen)
+        # entire screen
+        grim $screenshot_dir/$unique 2>/dev/null &&
+        wl-copy < $screenshot_dir/$unique
+        ;;
+    "color picker")
+        # pick color, get srgb and hex code, add new line with sed and pipe it into bemenu, then copy the selection to clipboard
+        grim -g "$(slurp -p)" -t ppm - | magick - -format '%[pixel:p{0,0}]' txt:- | grep "(" | awk '{print $3,$4}' | sed s/' '/'\n'/ | show_bemenu | wl-copy
+        ;;
+    *)
+        exit 1 ;;
+esac
+

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+curr_datetime=$(date '+%a, %d %b %H:%M:%S')
+echo "^lm(foot -a float-menu -w 300x300 watch cal)$curr_datetime^lm()"
+#echo "^fg(#DA291C)$curr_datetime^fg()"
