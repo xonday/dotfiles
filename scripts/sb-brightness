@@ -20,7 +20,8 @@ case $BLOCK_BUTTON in
         ;;
 esac
 
-echo "󰃞  ${brightness_per}%"
+#echo "󰃞 ${brightness_per}%"
+echo "^fg(#f9e2af)󰃞 ^fg() ${brightness_per}%"
 
 # make it clickable for dwlb:
 #echo "^lm(notify-send "test" -t 2000)󰃞 ${brightness_per}%^lm()"

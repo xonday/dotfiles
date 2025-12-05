@@ -3,6 +3,7 @@ static const Block blocks[] = {
 	/*Icon*/	/*Command*/		/*Update Interval*/	/*Update Signal*/
 	/*{"", "slstatus -s",				5,		0},*/
 	{"", "sb-internet",				60,		12},
+	{"", "bluetooth-sb",				60,		13},
 	{"^fg(#b4befe)󰻠 ^fg()", "top -bn 2 -d 0.01 | grep '^%Cpu' | tail -n 1 | gawk '{print $2+$4+$6\"%\"}'", 30, 0},
 	/*{" Mem ", "free -h | awk '/^Mem/ { print $3\"/\"$2 }' | sed s/i//g",	30,		0},*/
 	{"", "memory-perc-sb",	30,		0},
