@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# script inspiration from: https://bbs.archlinux.org/viewtopic.php?pid=777137#p777137
+
+# prompt user for password
+## -x indicator -> replaces input with asterisks
+## passing /dev/null (no input) into dmenu, so it instantly closes and takes user input instead
+## echo empty string as sudo expects a new line
+
+bemenu -H 26 -x indicator -p "Enter sudo password: " < /dev/null && echo 2>/dev/null
+
+
+# other prompt styles:
+    #show_bemenu </dev/null && echo 2>/dev/null
+    #bemenu -l 2 --center --width-factor 0.3 -x indicator -p "Enter sudo password: " < /dev/null && echo 2>/dev/null
+     #bemenu \
+       #--center\
+       #-H 26 \
+       #--width-factor 0.20 \
+       #--monitor '1' \
+       #--hp '6' \
+       #--fn 'Nerd Font Mono' \
+       #--tb '#1e1e2e' \
+       #--fb '#1e1e2e' \
+       #--nb '#1e1e2e' \
+       #--hb '#1e1e2e' \
+       #--fbb '#1e1e2e' \
+       #--ab '#1e1e2e' \
+       #--sb '#1e1e2e' \
+       #--ff '#f5c2e7' \
+       #--tf '#7287fd' \
+       #--sf '#7287fd' \
+       #--hf '#7287fd' \
+       #-x indicator \
+       #-p "Enter sudo password: "
+
