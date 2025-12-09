@@ -17,6 +17,7 @@ static const float focuscolor[] = { 0.8f, 0.65f, 0.97f, 1.0f }; // Active: Mauve
 static const float bordercolor[] = { 0.19f, 0.20f, 0.27f, 1.0f }; // Inactive: Dark Surface
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
+//static const char *fonts[]                 = {"JetBrainsMono Nerd Font Mono:style=Bold:size=16"};
 
 /* tagging - TAGCOUNT must be no greater than 31 */
 #define TAGCOUNT (9)
@@ -30,6 +31,7 @@ static const Rule rules[] = {
 	/* examples: */
 	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
 	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
+    { "float-menu",       NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -53,9 +55,9 @@ static const MonitorRule monrules[] = {
 	{ "eDP-1",    0.5f,  1,      2,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
 	*/
 	/* defaults */
-	{ NULL,       0.64f, 1,      1,    &layouts[3], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
+	{ NULL,       0.55f, 1,      1,    &layouts[3], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
 };
-
+#
 /* keyboard */
 static const struct xkb_rule_names xkb_rules = {
 	/* can specify fields: rules, model, layout, variant, options */
@@ -72,7 +74,7 @@ static const int repeat_delay = 200;
 static const int tap_to_click = 1;
 static const int tap_and_drag = 1;
 static const int drag_lock = 1;
-static const int natural_scrolling = 0;
+static const int natural_scrolling = 1;
 static const int disable_while_typing = 1;
 static const int left_handed = 0;
 static const int middle_button_emulation = 0;
@@ -125,7 +127,7 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 
 /* commands */
 static const char *termcmd[] = { "foot", NULL };
-static const char *menucmd[] = { "bemenu-run", NULL };
+static const char *menucmd[] = { "bemenu_run_custom", NULL }; //using custom riced bemenu script
 static const char *upvol[] = { "sh", "-c", "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+; pkill -SIGRTMIN+11 someblocks", NULL };
 static const char *downvol[] = { "sh", "-c", "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%-; pkill -SIGRTMIN+11 someblocks", NULL };
 static const char *mutevol[] = { "sh", "-c", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -SIGRTMIN+11 someblocks", NULL };
@@ -136,8 +138,9 @@ static const char *brdowncmd[] = { "sh", "-c", "brightnessctl set 5%-; pkill -SI
 static const char *powermenucmd[] = { "powermenu", NULL };
 static const char *fileexplorercmd[] = { "foot", "yazi", NULL };
 static const char *keepasscmd[] = { "keepassxc", NULL };
-static const char *nightlightcmd[] = { "toggle-nightlight", NULL };
-/*static const char *killsomeblockscmd[] = { "sh", "-c", "pkill someblocks", NULL };*/
+static const char *nightlightcmd[] = { "nightlight", NULL };
+static const char *screenshotcmd[] = { "screenshot", NULL };
+static const char *bluetoothcmd[] = { "bluetooth", NULL };
 
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
@@ -177,6 +180,7 @@ static const Key keys[] = {
 	TAGKEYS(          XKB_KEY_8, XKB_KEY_asterisk,                   7),
 	TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                  8),
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Q,          quit,           {0} },
+    { MODKEY,                    XKB_KEY_b,          togglebar,      {0} },
 	{ 0,           XKB_KEY_XF86AudioRaiseVolume,   spawn,      {.v = upvol} },
 	{ 0,           XKB_KEY_XF86AudioLowerVolume,   spawn,      {.v = downvol} },
 	{ 0,           XKB_KEY_XF86AudioMute,   spawn,      {.v = mutevol} },
@@ -186,7 +190,8 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_K,      	spawn, 	{.v = keepasscmd} },
 	{ MODKEY,                    XKB_KEY_e,          spawn, {.v = fileexplorercmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_N,      	spawn, 	{.v = nightlightcmd} },
-	/*{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Q,          spawn,           {.v = killsomeblockscmd} },*/
+	{ 0,           XKB_KEY_Print,   spawn,      {.v = screenshotcmd} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_B,   spawn,      {.v = bluetoothcmd} },
 
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },

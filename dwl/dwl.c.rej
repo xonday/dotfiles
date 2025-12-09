@@ -1,0 +1,56 @@
+--- dwl.c
++++ dwl.c
+@@ -73,12 +73,13 @@
+ #define MAX(A, B)               ((A) > (B) ? (A) : (B))
+ #define MIN(A, B)               ((A) < (B) ? (A) : (B))
+ #define CLEANMASK(mask)         (mask & ~WLR_MODIFIER_CAPS)
+-#define VISIBLEON(C, M)         ((M) && (C)->mon == (M) && ((C)->tags & (M)->tagset[(M)->seltags]))
++#define VISIBLEON(C, M)         ((M) && (C)->mon == (M) && ((C)->tags & (M)->tagset[(M)->seltags]) && !(C)->swallowedby)
+ #define LENGTH(X)               (sizeof X / sizeof X[0])
+ #define END(A)                  ((A) + LENGTH(A))
+ #define TAGMASK                 ((1u << TAGCOUNT) - 1)
+ #define LISTEN(E, L, H)         wl_signal_add((E), ((L)->notify = (H), (L)))
+ #define LISTEN_STATIC(E, H)     do { static struct wl_listener _l = {.notify = (H)}; wl_signal_add((E), &_l); } while (0)
++#define BORDERPX(C)             (borderpx + ((C)->swallowing ? (int)ceilf(swallowborder * (C)->swallowing->bw) : 0))
+ 
+ /* enums */
+ enum { CurNormal, CurPressed, CurMove, CurResize }; /* cursor */
+@@ -104,7 +105,8 @@ typedef struct {
+ } Button;
+ 
+ typedef struct Monitor Monitor;
+-typedef struct {
++typedef struct Client Client;
++struct Client {
+ 	/* Must keep these three elements in this order */
+ 	unsigned int type; /* XDGShell or X11* */
+ 	struct wlr_box geom; /* layout-relative, includes border */
+@@ -342,11 +351,15 @@ static void setsel(struct wl_listener *listener, void *data);
+ static void setup(void);
+ static void spawn(const Arg *arg);
+ static void startdrag(struct wl_listener *listener, void *data);
++static void swallow(Client *c, Client *toswallow);
+ static void tag(const Arg *arg);
+ static void tagmon(const Arg *arg);
++static Client *termforwin(Client *c);
+ static void tile(Monitor *m);
+ static void togglefloating(const Arg *arg);
+ static void togglefullscreen(const Arg *arg);
++static void toggleswallow(const Arg *arg);
++static void toggleautoswallow(const Arg *arg);
+ static void toggletag(const Arg *arg);
+ static void toggleview(const Arg *arg);
+ static void unlocksession(struct wl_listener *listener, void *data);
+@@ -489,6 +506,12 @@ applyrules(Client *c)
+ 			}
+ 		}
+ 	}
++	if (enableautoswallow && !c->noswallow && !c->isfloating &&
++			!c->surface.xdg->initial_commit) {
++		Client *p = termforwin(c);
++		if (p)
++			swallow(c, p);
++	}
+ 	setmon(c, mon, newtags);
+ }
+ 

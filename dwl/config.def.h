@@ -138,7 +138,7 @@ static const char *brdowncmd[] = { "sh", "-c", "brightnessctl set 5%-; pkill -SI
 static const char *powermenucmd[] = { "powermenu", NULL };
 static const char *fileexplorercmd[] = { "foot", "yazi", NULL };
 static const char *keepasscmd[] = { "keepassxc", NULL };
-static const char *nightlightcmd[] = { "toggle-nightlight", NULL };
+static const char *nightlightcmd[] = { "nightlight", NULL };
 static const char *screenshotcmd[] = { "screenshot", NULL };
 static const char *bluetoothcmd[] = { "bluetooth", NULL };
 
