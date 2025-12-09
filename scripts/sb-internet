@@ -27,5 +27,5 @@ fi
 
 #printf "%s%s%s\n" "$wifiicon"  "$ethericon" "$tunicon"
 #printf "%s%s%s\n" "^fg(#74c7ec)$wifiicon  ^fg()$wifiperc" "$ethericon" "$tunicon"
-printf "%s%s%s\n" "^fg(#b4befe)$wifiicon  ^fg()$wifiperc" "$ethericon" "$tunicon"
+printf "%s%s%s\n" "^lm(network-config)^fg(#b4befe)$wifiicon  ^fg()$wifiperc ^lm()" "$ethericon" "$tunicon"
 
