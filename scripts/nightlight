@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+show_bemenu() {
+bemenu \
+  --center\
+  -l 5 \
+  --ignorecase \
+  -H 26 \
+  --width-factor 0.20 \
+  --binding 'vim' \
+  --vim-esc-exits \
+  --monitor '1' \
+  --hp '6' \
+  --fn 'Nerd Font Mono' \
+  --tb '#1e1e2e' \
+  --fb '#1e1e2e' \
+  --nb '#1e1e2e' \
+  --hb '#1e1e2e' \
+  --fbb '#1e1e2e' \
+  --ab '#1e1e2e' \
+  --sb '#1e1e2e' \
+  --ff '#f5c2e7' \
+  --tf '#7287fd' \
+  --sf '#7287fd' \
+  --hf '#7287fd'
+  #--vim-normal-mode \
+}
+
+
+case "$(printf "cancel\nnightlight on - strong\nnightlight on - normal\nnightlight auto\nnightlight off" | show_bemenu )" in
+    "nightlight on - strong")
+        pkill gammastep ;
+        gammastep -l 41:12 -O 2500 &>/dev/null &
+        ;;
+    "nightlight on - normal")
+        pkill gammastep ;
+        gammastep -l 41:12 -O 4000 &>/dev/null &
+        ;;
+    "nightlight auto")
+        pkill gammastep ;
+        gammastep -l 41:12 &>/dev/null &
+        ;;
+    "nightlight off")
+        pkill gammastep
+        ;;
+    "cancel")
+        exit 0
+        ;;
+    *)
+        exit 1;
+        ;;
+esac
+
+# update someblocks (brightness icon)
+pkill -SIGRTMIN+10 someblocks
+

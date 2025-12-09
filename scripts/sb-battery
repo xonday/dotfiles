@@ -22,16 +22,31 @@ for battery in /sys/class/power_supply/BAT?*; do
 	[ -n "${capacity+x}" ] && printf " "
 	# Sets up the status and capacity
 	case "$(cat "$battery/status" 2>&1)" in
-		"Full") status="^fg(#a6e3a1)󰁹^fg()" ;;
-        "Discharging") status="^fg(#fab387)󱟞^fg()" ;;
-        "Charging") status="^fg(#a6e3a1)󰂄^fg()" ;;
-		"Not charging") status="^fg(#f38ba8)󱃍^fg()" ;;
-		"Unknown") status="^fg(#f38ba8)󰂑^fg()" ;;
+		"Full") 
+            status="󰁹" 
+            print="^fg(#a6e3a1)󰁹^fg()" ;;
+        "Discharging") 
+            status="󱟞" ;;
+            #status="^fg(#fab387)󱟞^fg()" ;;
+        "Charging") 
+            status="󰂄"
+            print="^fg(#a6e3a1)󰂄^fg()" ;;
+		"Not charging") 
+            status="󱃍 "
+            print="^fg(#f38ba8)󱃍^fg()" ;;
+		"Unknown") 
+            status="󰂑" 
+            print="^fg(#f38ba8)󰂑^fg()" ;;
 		*) exit 1 ;;
 	esac
 	capacity="$(cat "$battery/capacity" 2>&1)"
 	# Will make a warn variable if discharging and low
-	[ "$status" = "󰂄" ] && [ "$capacity" -le 25 ] && warn="󰁻"
+	[ "$status" = "󱟞" ] && [ "$capacity" -le 45 ] && print="^fg(#fab387)󱟞^fg()"
+	[ "$status" = "󱟞" ] && [ "$capacity" -gt 45 ] && print="^fg(#a6e3a1)󱟞^fg()"
+	[ "$status" = "󱟞" ] && [ "$capacity" -gt 80 ] && print="^fg(#a6e3a1)󰁹^fg()"
+	[ "$status" = "󰂄" ] && [ "$capacity" -gt 80 ] && notify-send "Battery charge high, unplug to save battery life"
+	[ "$status" = "󱟞" ] && [ "$capacity" -le 25 ] && warn="󰁻" && notify-send "Battery charge low, please plug into power"
 	# Prints the info
-	printf "%s%s %d%%" "$status" "$warn" "$capacity"; unset warn
+	#printf "%s%s %d%%" "$status" "$warn" "$capacity"; unset warn
+	printf "%s%s %d%%" "$print" "$warn" "$capacity"; unset warn
 done && printf "\\n"

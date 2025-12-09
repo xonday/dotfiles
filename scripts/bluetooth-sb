@@ -5,15 +5,19 @@ status=$(bluetoothctl show | grep Powered | awk '{print $2}')
 case $status in
     "no")
         #echo "󰂲 off"
-        echo "^fg(#b4befe)󰂲 ^fg()off"
+        #echo "^lm(bluetooth)^fg(#b4befe)󰂲 ^fg()off^lm()"
+        bt_status="^lm(bluetooth)^fg(#b4befe)󰂲 ^fg()off^lm()"
         ;;
     "yes")
        if [ "$(bluetoothctl devices Connected 2>/dev/null)" ]; then
            #echo "󰂱 $(bluetoothctl devices Connected | awk '{print $3}')"
-           echo "^fg(#b4befe)󰂱 ^fg() $(bluetoothctl devices Connected | awk '{print $3}')"
+           #echo "^lm(bluetooth)^fg(#b4befe)󰂱 ^fg() $(bluetoothctl devices Connected | awk '{print $3}')^lm()"
+            bt_status="^lm(bluetooth)^fg(#b4befe)󰂱 ^fg() $(bluetoothctl devices Connected | awk '{print $3}')^lm()"
             else
             #echo "󰂯 "
-            echo "^fg(#b4befe)󰂯 fg()"
+            #echo "^lm(bluetooth)^fg(#b4befe)󰂯 ^fg()^lm()"
+            bt_status="^lm(bluetooth)^fg(#b4befe)󰂯 ^fg()^lm()"
        fi
         ;;
 esac
+echo "$bt_status"

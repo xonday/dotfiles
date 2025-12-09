@@ -4,19 +4,6 @@
 # Show 󰈁 if connected to ethernet or 󰈂 if none. 󰈀
 # Show 󰖂 if a vpn connection is active
 
-case $BLOCK_BUTTON in
-	1) "$TERMINAL" -e nmtui; pkill -RTMIN+4 dwmblocks ;;
-	3) notify-send " Internet module" "\- Click to connect
-󰤮: wifi disabled
-󰤫: no wifi connection
-: wifi connection with quality
-󰈂: no ethernet
-󰈁: ethernet working
-󰖂: vpn is active
-" ;;
-	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
-esac
-
 # Wifi
 if [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'up' ] ; then
 	wifiperc="$(awk '/^\s*w/ { print "", int($3 * 100 / 70) "% " }' /proc/net/wireless)"
@@ -32,7 +19,7 @@ fi
 #[ -n "$(cat /sys/class/net/tun*/operstate 2>/dev/null)" ] && tunicon=" 󰖂"
 #[ "$(ip a | grep wg0 | cut -d " " -f 2 2> /dev/null | tr -d ' ')" = 'wg0:' ] && tunicon="󰖂"
 if ls /sys/class/net/wg0 &> /dev/null ; then
-	tunicon="󰖂"
+	tunicon="󰖂  vpn"
 else
 	tunicon=""
 fi

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+show_bemenu() {
+bemenu \
+  --center\
+  -l 5 \
+  --ignorecase \
+  -H 26 \
+  --width-factor 0.20 \
+  --binding 'vim' \
+  --vim-esc-exits \
+  --monitor '1' \
+  --hp '6' \
+  --fn 'Nerd Font Mono' \
+  --tb '#1e1e2e' \
+  --fb '#1e1e2e' \
+  --nb '#1e1e2e' \
+  --hb '#1e1e2e' \
+  --fbb '#1e1e2e' \
+  --ab '#1e1e2e' \
+  --sb '#1e1e2e' \
+  --ff '#f5c2e7' \
+  --tf '#7287fd' \
+  --sf '#7287fd' \
+  --hf '#7287fd'
+  #--vim-normal-mode \
+}
+
+
+case "$(printf "network config\ntoggle vpn connection\ncancel" | show_bemenu )" in
+
+    "network config")
+        foot --app-id='float-menu' -w 800x700 nmtui 
+        ;;
+    "toggle vpn connection")
+        export SUDO_ASKPASS="$HOME/.local/bin/bemenu-pass"
+        #call dpass script (bemenu script for password input)
+        sudo -A $SUDO_ASKPASS 2>/dev/null
+        #[ ip link | grep wg0 &>/dev/null ] && sudo wg-quick down wg0 &>/dev/null || sudo wg-quick down wg0 &>/dev/null
+        if ip link | grep wg0 &>/dev/null ; then
+            sudo wg-quick down wg0 &>/dev/null && # bring interface down (disconnect)   
+            notify-send -t 2000 "vpn connection disabled"
+        else
+            sudo wg-quick up wg0 &>/dev/null	&& # bring interface up (connect)  
+            notify-send -t 2000 "vpn connection successfully established"
+        fi
+        ;;
+    cancel)
+        exit 0
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
+pkill -SIGRTMIN+12 someblocks
