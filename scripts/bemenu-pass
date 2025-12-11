@@ -4,7 +4,8 @@
 
 # prompt user for password
 ## -x indicator -> replaces input with asterisks
-## passing /dev/null (no input) into dmenu, so it instantly closes and takes user input instead
+## passing /dev/null (no input) into dmenu, so it instantly closes and takes user input instead ->
+    ##&<- was used in dmenu to do this
 ## echo empty string as sudo expects a new line
 
 bemenu -H 26 -x indicator -p "Enter sudo password: " < /dev/null && echo 2>/dev/null
