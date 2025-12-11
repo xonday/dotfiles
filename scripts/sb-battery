@@ -44,7 +44,8 @@ for battery in /sys/class/power_supply/BAT?*; do
 	[ "$status" = "󱟞" ] && [ "$capacity" -le 45 ] && print="^fg(#fab387)󱟞^fg()"
 	[ "$status" = "󱟞" ] && [ "$capacity" -gt 45 ] && print="^fg(#a6e3a1)󱟞^fg()"
 	[ "$status" = "󱟞" ] && [ "$capacity" -gt 80 ] && print="^fg(#a6e3a1)󰁹^fg()"
-	[ "$status" = "󱟞" ] && [ "$capacity" -le 25 ] && warn="󰁻"
+	[ "$status" = "󰂄" ] && [ "$capacity" -gt 80 ] && notify-send "Battery charge high, unplug to save battery life"
+	[ "$status" = "󱟞" ] && [ "$capacity" -le 25 ] && warn="󰁻" && notify-send "Battery charge low, please plug into power"
 	# Prints the info
 	#printf "%s%s %d%%" "$status" "$warn" "$capacity"; unset warn
 	printf "%s%s %d%%" "$print" "$warn" "$capacity"; unset warn
