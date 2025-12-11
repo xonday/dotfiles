@@ -22,22 +22,30 @@ bemenu \
   --ff '#f5c2e7' \
   --tf '#7287fd' \
   --sf '#7287fd' \
-  --hf '#7287fd'
+  --hf '#7287fd' \
+  -p 'Network options'
   #--vim-normal-mode \
 }
 
+if ip link | grep wg0 &>/dev/null ; then 
+    vpn_status="active" 
+    dmenu_msg="disable"
+    else
+    vpn_status="inactive"
+    dmenu_msg="enable"
+fi
 
-case "$(printf "network config\ntoggle vpn connection\ncancel" | show_bemenu )" in
+case "$(printf "network config\n$dmenu_msg vpn connection\ncancel" | show_bemenu )" in
 
     "network config")
         foot --app-id='float-menu' -w 800x700 nmtui 
         ;;
-    "toggle vpn connection")
+    "$dmenu_msg vpn connection")
         export SUDO_ASKPASS="$HOME/.local/bin/bemenu-pass"
         #call dpass script (bemenu script for password input)
         sudo -A $SUDO_ASKPASS 2>/dev/null
         #[ ip link | grep wg0 &>/dev/null ] && sudo wg-quick down wg0 &>/dev/null || sudo wg-quick down wg0 &>/dev/null
-        if ip link | grep wg0 &>/dev/null ; then
+        if [ $vpn_status = "active" ]; then
             sudo wg-quick down wg0 &>/dev/null && # bring interface down (disconnect)   
             notify-send -t 2000 "vpn connection disabled"
         else
