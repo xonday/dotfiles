@@ -67,7 +67,8 @@ static const struct xkb_rule_names xkb_rules = {
 	/* example:
 	.options = "ctrl:nocaps",
 	*/
-	.options = NULL,
+    .layout = "us,de(qwerty),it",
+	.options = "grp:alt_caps_toggle",
 };
 
 static const int repeat_rate = 35;
@@ -144,6 +145,7 @@ static const char *keepasscmd[] = { "keepassxc", NULL };
 static const char *nightlightcmd[] = { "nightlight", NULL };
 static const char *screenshotcmd[] = { "screenshot", NULL };
 static const char *bluetoothcmd[] = { "bluetooth", NULL };
+static const char *wlockcmd[] = { "wlock", NULL };
 
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
@@ -194,9 +196,11 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_P,      	spawn, 	{.v = powermenucmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_K,      	spawn, 	{.v = keepasscmd} },
 	{ MODKEY,                    XKB_KEY_e,          spawn, {.v = fileexplorercmd} },
+	{ MODKEY,                    XKB_KEY_e,          spawn, {.v = fileexplorercmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_N,      	spawn, 	{.v = nightlightcmd} },
 	{ 0,           XKB_KEY_Print,   spawn,      {.v = screenshotcmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_B,   spawn,      {.v = bluetoothcmd} },
+	{ MODKEY,                    XKB_KEY_l,          spawn, {.v = wlockcmd} },
 
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },
