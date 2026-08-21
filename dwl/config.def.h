@@ -146,6 +146,7 @@ static const char *nightlightcmd[] = { "nightlight", NULL };
 static const char *screenshotcmd[] = { "screenshot", NULL };
 static const char *bluetoothcmd[] = { "bluetooth", NULL };
 static const char *wlockcmd[] = { "wlock", NULL };
+static const char *cliphist_custom[] = { "cliphist-custom", NULL };
 
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
@@ -200,6 +201,7 @@ static const Key keys[] = {
 	{ 0,           XKB_KEY_Print,   spawn,      {.v = screenshotcmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_B,   spawn,      {.v = bluetoothcmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_L,          spawn, {.v = wlockcmd} },
+	{ MODKEY,                    XKB_KEY_v,          spawn, {.v = cliphist_custom} },
 
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },

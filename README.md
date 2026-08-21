@@ -49,7 +49,7 @@ mv JetBrainsMono ~/.local/share/fonts/
 rm JetBrainsMono.zip  
 
 ### other packages I'm using
-sudo zypper in ttf-jetbrains-mono-nerd sensors swaybg wl-clipboard grim slurp imv  
+sudo zypper in ttf-jetbrains-mono-nerd sensors swaybg wl-clipboard grim slurp imv cliphist
 
 ## 2. DWL - inital setup and install
 git clone https://github.com/xonday/dotfiles.git  
