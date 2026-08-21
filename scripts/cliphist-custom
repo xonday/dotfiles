@@ -1,0 +1,26 @@
+#!/bin/bash
+
+show_bemenu() {
+	bemenu \
+		--center \
+		--list 12 \
+		--ignorecase \
+		--prompt '' \
+		--line-height 28 \
+		--width-factor 0.5 \
+		--binding vim \
+		--vim-esc-exits \
+		--monitor 1 \
+		--hp 6 \
+		--fn 'Nerd Font Mono 11' \
+		--tb '#1e1e2e' --tf '#f5c2e7' \
+		--fb '#1e1e2e' --ff '#cdd6f4' \
+		--nb '#1e1e2e' --nf '#cdd6f4' \
+		--hb '#313244' --hf '#b4befe' \
+		--sb '#313244' --sf '#b4befe' \
+		--ab '#1e1e2e' --af '#cdd6f4' \
+		--scrollbar autohide
+}
+
+cliphist list | show_bemenu | cliphist decode | wl-copy
+
