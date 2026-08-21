@@ -29,7 +29,7 @@ sudo zypper dup -y
 **dependencies for dwl**  
 sudo zypper in -y libwlroots-0_19 cmake wayland-protocols-devel wlroots-devel libinput-devel libxkbcommon-devel  
 sudo zypper in -t pattern devel_basis  
-sudo zypper in -y bemenu foot
+sudo zypper in -y bemenu foot calc ddcutil
 
 **for notifications**
 * sudo zyppper in -y libnotify-tools mako 
@@ -89,12 +89,31 @@ dwlb -ipc -scale 2 # set scaling for dwlb if you have increased the display scal
 pkill someblocks  
 dwl -s ./autostart-with-dwl.sh; sleep 0.1 && someblocks -p | dwlb -status-stdin all &  
 
-3. make both files executable
-4. run ./start-dwl.sh
+1. make both files executable
+2. run ./start-dwl.sh
 
-### 4. Fix scripts location
+### 4. Fix scripts for desktop compatibility
+
+* For brightness to work with an external monitor connected you need to apply a udev rule (grant permission to a new group) and have the group assigned to your user:
+
+sudo groupadd i2c
+sudo usermod -aG i2c "$USER"
+
+```
+sudo tee /etc/udev/rules.d/60-ddcutil-i2c.rules <<'EOF'
+KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
+EOF
+```
+
+sudo udevadm control --reload
+sudo udevadm trigger
+
+### 5. Fix scripts location
 
 * copy the scripts you need from dotfiles/scripts into ~/.local/bin 
+* rsync -av dotfiles/scripts/ ~/.local/bin/
+* rsync -av --delete dotfiles/scripts/ ~/.local/bin/ 
+    * -> careful: this will delete all files in ~/.local/bin/ that arent in your dotfiles/scripts dir
 
 That's it!
 
