@@ -117,3 +117,9 @@ sudo udevadm trigger
 
 That's it!
 
+### Personal additions
+
+* some fonts for Chinese:
+
+sudo zypper install lxgw-wenkai-fonts lxgw-wenkai-screen-fonts
+
