@@ -1,0 +1,18 @@
+--- someblocks.c.orig	2026-08-21 14:19:34.030592177 +0200
++++ someblocks.c	2026-08-21 14:26:21.298459549 +0200
+@@ -115,9 +115,13 @@
+ {
+ 	strcpy(last, str);
+ 	str[0] = '\0';
+-	for (unsigned int i = 0; i < LENGTH(blocks); i++)
++	for (unsigned int i = 0; i < LENGTH(blocks); i++) {
++		if (strlen(statusbar[i]) <= strlen(delim))
++			continue;
+ 		strcat(str, statusbar[i]);
+-	str[strlen(str)-strlen(delim)] = '\0';
++	}
++	if (str[0] != '\0')
++		str[strlen(str)-strlen(delim)] = '\0';
+ 	return strcmp(str, last);//0 if they are the same
+ }
+ 

@@ -7,7 +7,7 @@ static const Block blocks[] = {
 	{"^fg(#b4befe)󰻠 ^fg()", "top -bn 2 -d 0.01 | grep '^%Cpu' | tail -n 1 | gawk '{print $2+$4+$6\"%\"}'", 30, 0},
 	/*{" Mem ", "free -h | awk '/^Mem/ { print $3\"/\"$2 }' | sed s/i//g",	30,		0},*/
 	{"", "memory-perc-sb",	30,		0},
-	{" ", "sb-battery",		60,		0},
+	{"", "sb-battery",		60,		0},
 	{"", "sb-brightness",				0,		10},
 	{"", "sb-volume",				0,		11},
 	{"", "calendar-sb",					1,		0},
