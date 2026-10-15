@@ -1,127 +1,221 @@
 # Dotfiles for my DWL setup
 
-# My DWL Build - Setup Guide
+## Notes
 
-### Notes
-
-* On the Distro: I'm using OpenSUSE Tumbleweed/Slowroll
+* **Distro:** I'm using openSUSE Tumbleweed/Slowroll
     * I started with a Server install
-    * From there you can follow more or less my commands (though I likely missed some steps)
-    * With slightly differing package names this should work on other distros
-* Initially I followed this guide by tonybtw:  
-    * https://www.youtube.com/watch?v=XkHrQhI95l0  
-    * blog post: https://www.tonybtw.com/tutorial/dwl/  
-    * Later on I switched to dwlb as the bar together with someblocks. I also created some custom scripts (or modified some that I took from here: https://github.com/LukeSmithxyz/voidrice/tree/master/.local/bin/statusbar)  
-    * Bread on Penguins also makes great videos (not just) on dwm: https://www.youtube.com/@BreadOnPenguins  
-* I have all the patches under dotfiles/dwl/patches/ applied
+    * From there you can more or less follow my commands below
+    * With slightly different package names this should work on other distros too
+* Initially I followed this guide by tonybtw:
+    * Video: https://www.youtube.com/watch?v=XkHrQhI95l0
+    * Blog post: https://www.tonybtw.com/tutorial/dwl/
+* Later on I switched to dwlb as the bar, together with someblocks. I also wrote some custom status bar scripts (or modified some I took from here: https://github.com/LukeSmithxyz/voidrice/tree/master/.local/bin/statusbar)
+* Bread on Penguins also makes great videos (not just) on dwm: https://www.youtube.com/@BreadOnPenguins
+* All the patches under `dotfiles/dwl/patches/` are already applied
 
-## (optional) migrate to Slowroll
-* https://en.opensuse.org/Portal:Slowroll  
-sudo zypper in opensuse-migration-tool  
-sudo opensuse-migration-tool --dry-run  
-sudo opensuse-migration-tool  
-sudo reboot  
+## (Optional) Migrate to Slowroll
+
+See https://en.opensuse.org/Portal:Slowroll
+
+```bash
+sudo zypper in opensuse-migration-tool
+sudo opensuse-migration-tool --dry-run
+sudo opensuse-migration-tool
+sudo reboot
+```
 
 ## 1. Installing packages
 
-sudo zypper dup -y  
+```bash
+sudo zypper dup -y
+```
 
-**dependencies for dwl**  
-sudo zypper in -y libwlroots-0_19 cmake wayland-protocols-devel wlroots-devel libinput-devel libxkbcommon-devel  
-sudo zypper in -t pattern devel_basis  
-sudo zypper in -y bemenu foot calc ddcutil
+**Dependencies for dwl**
 
-**for notifications**
-* sudo zyppper in -y libnotify-tools mako 
-* mako is the notification daemon that will listen to libnotify
+```bash
+sudo zypper in -y libwlroots-0_19 cmake wayland-protocols-devel wlroots-devel libinput-devel libxkbcommon-devel
+sudo zypper in -y -t pattern devel_basis
+```
 
-**applications to get started**  
-* sudo zypper in git firefox htop  
+**Essential applications**
 
-**fallback fonts**
-* install some fallback fonts if you get font errors:  
-* sudo zypper in suse-fonts liberation-fonts dejavu-fonts
+```bash
+sudo zypper in -y bemenu foot calc ddcutil wl-clipboard cliphist wget unzip
+```
 
-### Jetbrains Mono Nerd Font
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBrainsMono.zip  
-unzip -o -q -d JetBrainsMono JetBrainsMono.zip   
-mv JetBrainsMono ~/.local/share/fonts/  
-rm JetBrainsMono.zip  
+**Notifications** (mako is the notification daemon that listens to libnotify)
 
-### other packages I'm using
-sudo zypper in ttf-jetbrains-mono-nerd sensors swaybg wl-clipboard grim slurp imv cliphist
+```bash
+sudo zypper in -y libnotify-tools mako
+```
 
-## 2. DWL - inital setup and install
-git clone https://github.com/xonday/dotfiles.git  
-cd dotfiles/dwl  
-vim config.def.h # adjust keybinds to your liking  
-sudo make clean install  
-* dwl can now be run from the terminal, just type its name
+**Applications to get started**
 
-### 3. Bar Setup
+```bash
+sudo zypper in -y git firefox htop rsync
+```
+
+**Fallback fonts** (install these if you get font errors)
+
+```bash
+sudo zypper in -y suse-fonts liberation-fonts dejavu-fonts
+```
+
+### JetBrains Mono Nerd Font
+
+```bash
+cd ~
+mkdir -p ~/.local/share/fonts
+rm -rf ~/.local/share/fonts/JetBrainsMono
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBrainsMono.zip
+unzip -o -q -d JetBrainsMono JetBrainsMono.zip
+mv JetBrainsMono ~/.local/share/fonts/
+fc-cache -f
+rm JetBrainsMono.zip
+```
+
+### Other packages I'm using
+
+```bash
+sudo zypper in -y sensors swaybg grim slurp imv wlr-randr
+```
+
+## 2. DWL – initial setup and install
+
+```bash
+mkdir -p ~/Tech
+git clone https://github.com/xonday/dotfiles.git ~/Tech/dotfiles
+cd ~/Tech/dotfiles/dwl
+vim config.def.h   # adjust keybinds to your liking
+make clean
+make
+sudo make install
+```
+
+> **Note:** `make` only creates `config.h` from `config.def.h` if `config.h` doesn't exist yet. If there already is a `config.h`, edit that one instead (or delete it so it gets regenerated).
+
+## 3. Bar setup
 
 ### dwlb
-sudo zypper in fcft-devel # dependency  
-cd dotfiles/dwlb  
-make  
-sudo make install  
 
-#### someblocks
-cd dotfiles/someblocks
-make && sudo make install
-
-**fixing startup with someblocks:**  
-1. create autostart script:
-
+```bash
+sudo zypper in -y fcft-devel   # dependency
+cd ~/Tech/dotfiles/dwlb
+make
+sudo make install
 ```
+
+### someblocks
+
+```bash
+cd ~/Tech/dotfiles/someblocks
+make
+sudo make install
+```
+
+### Startup scripts
+
+The two startup scripts live in `dotfiles/startup_scripts/`. Copy them into `~/.local/bin/` (make sure that's on your `PATH`):
+
+```bash
+rsync -av ~/Tech/dotfiles/startup_scripts/ ~/.local/bin/
+chmod +x ~/.local/bin/start_dwl.sh ~/.local/bin/autostart-with-dwl.sh
+```
+
+**`autostart-with-dwl.sh`** – everything that should run inside the dwl session:
+
+```sh
 #!/bin/sh
 
-#scale display  
-wlr-randr --output eDP-1 --scale 1.5  
-#Set the wallpaper  
-swaybg -i dotfiles/images/fancy_setup_2560x1600.png & #put your image path here  
-#Start mako (notification daemon)  
-mako &  
-dwlb -ipc -scale 2 # set scaling for dwlb if you have increased the display scale as I did above
+# scale display
+wlr-randr --output eDP-1 --scale 1.5
+
+# wallpaper (put your image path here)
+swaybg -i "$HOME/Tech/dotfiles/images/dayou-lu_wind-through-the-lotus-pond.JPG" &
+
+# notification daemon
+mako &
+
+# clipboard history
+wl-paste --watch cliphist store &
+
+# feed someblocks into the bar once dwlb is up
+(sleep 1; someblocks -p | dwlb -status-stdin all) &
+
+# dwlb stays in the foreground so this script lives as long as dwl
+# (set -scale if you increased the display scale as above)
+exec dwlb -ipc -scale 2
 ```
 
-2. create start-dwl.sh script:
+**`start_dwl.sh`** – starts dwl with the autostart script:
+
+```sh
+#!/bin/sh
+# kill leftover someblocks from a previous session
+pkill someblocks
+exec dwl -s "$HOME/.local/bin/autostart-with-dwl.sh"
 ```
-#!/bin/sh  
-pkill someblocks  
-dwl -s ./autostart-with-dwl.sh; sleep 0.1 && someblocks -p | dwlb -status-stdin all &  
 
-1. make both files executable
-2. run ./start-dwl.sh
+To start dwl, log in on a TTY and run:
+
+```bash
+start_dwl.sh
 ```
 
-### 4. Fix scripts for desktop compatibility
+## 4. Brightness control for external monitors (ddcutil)
 
-* For brightness to work with an external monitor connected you need to apply a udev rule (grant permission to a new group) and have the group assigned to your user:
+ddcutil talks to monitors through `/dev/i2c-*`. For that to work as a normal user you need to:
 
-sudo groupadd i2c
+1. load the `i2c-dev` kernel module (now and at every boot)
+2. add a udev rule that gives the `i2c` group access to those devices
+3. add your user to that group
+
+```bash
+sudo groupadd -f i2c
 sudo usermod -aG i2c "$USER"
 
-```
 sudo tee /etc/udev/rules.d/60-ddcutil-i2c.rules <<'EOF'
 KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
 EOF
-```
+
+# load i2c-dev at every boot
+echo i2c-dev | sudo tee /etc/modules-load.d/i2c-dev.conf
 
 sudo udevadm control --reload
+sudo modprobe i2c-dev
 sudo udevadm trigger
+```
 
-### 5. Fix scripts location
+Log out and back in (or reboot) so the new group takes effect, then test it:
 
-* copy the scripts you need from dotfiles/scripts into ~/.local/bin 
-* rsync -av dotfiles/scripts/ ~/.local/bin/
-* rsync -av --delete dotfiles/scripts/ ~/.local/bin/ 
-    * -> careful: this will delete all files in ~/.local/bin/ that arent in your dotfiles/scripts dir
+```bash
+ddcutil detect
+```
+
+If your external monitor shows up, brightness control works. If you get "permission denied", the group change hasn't taken effect yet.
+
+## 5. Scripts
+
+Copy the scripts from `dotfiles/scripts` into `~/.local/bin`:
+
+```bash
+rsync -av ~/Tech/dotfiles/scripts/ ~/.local/bin/
+```
+
+Or, to keep `~/.local/bin` an exact mirror of the repo:
+
+```bash
+rsync -av --delete ~/Tech/dotfiles/scripts/ ~/.local/bin/
+```
+
+> **Careful:** `--delete` removes every file in `~/.local/bin/` that isn't in `dotfiles/scripts/`, including the startup scripts from step 3. Only use it if you know what's in there.
 
 That's it!
 
-### Personal additions
+## Personal additions
 
-* some fonts for Chinese:
+Fonts for Chinese:
 
-sudo zypper install lxgw-wenkai-fonts lxgw-wenkai-screen-fonts
+```bash
+sudo zypper in -y lxgw-wenkai-fonts lxgw-wenkai-screen-fonts
+```
