@@ -73,6 +73,7 @@ make && sudo make install
 **fixing startup with someblocks:**  
 1. create autostart script:
 
+```
 #!/bin/sh
 
 #scale display  
@@ -82,15 +83,17 @@ swaybg -i dotfiles/images/fancy_setup_2560x1600.png & #put your image path here
 #Start mako (notification daemon)  
 mako &  
 dwlb -ipc -scale 2 # set scaling for dwlb if you have increased the display scale as I did above
+```
 
 2. create start-dwl.sh script:
-
+```
 #!/bin/sh  
 pkill someblocks  
 dwl -s ./autostart-with-dwl.sh; sleep 0.1 && someblocks -p | dwlb -status-stdin all &  
 
 1. make both files executable
 2. run ./start-dwl.sh
+```
 
 ### 4. Fix scripts for desktop compatibility
 
