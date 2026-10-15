@@ -3,17 +3,16 @@
 # scale display
 /usr/bin/wlr-randr --output eDP-1 --scale 1.5
 
-# Set the wallpaper
-/usr/bin/swaybg -i /home/alex/Tech/dotfiles/images/dayou-lu_wind-through-the-lotus-pond.JPG &
-#/usr/bin/swaybg -i /home/alex/Pictures/fallFoliage.jpeg &
+# wallpaper
+swaybg -i "$HOME/Tech/dotfiles/images/dayou-lu_wind-through-the-lotus-pond.JPG" &
 
-# Start mako (notification daemon)
+# start notification daemon
 /usr/bin/mako &
 
-# start cliphist
+# start clipboard history
 wl-paste --watch cliphist store &
 
-/usr/local/bin/dwlb -ipc -scale 2 #-font "Nerd Font Mono=12" -scale 2
-#dwlb -ipc -font "DejaVu Sans Mono=13" # -scale 2
-#dwlb -ipc -font "Adwaita Sans=13" # -scale 2
+# feed someblocks into the bar once dwlb is up
+(sleep 1; someblocks -p | dwlb -status-stdin all) &
 
+exec dwlb -ipc -scale 2
