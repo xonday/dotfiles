@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail #stop on errors
 
-sudo zypper dup -y
+[[ $EUID -ne 0 ]] || { echo "run as your normal user, not root"; exit 1; }
+
+sudo zypper dup -y --auto-agree-with-licenses
 
 # dependencies for dwl
 echo "installing essential dependencies for wayland and DWL"
