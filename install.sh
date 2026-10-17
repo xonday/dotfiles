@@ -7,21 +7,21 @@ sudo zypper dup -y --auto-agree-with-licenses
 
 # dependencies for dwl
 echo "installing essential dependencies for wayland and DWL"
-sudo zypper in -y libwlroots-0_19 cmake wayland-protocols-devel wlroots-devel libinput-devel libxkbcommon-devel
 sudo zypper in -y -t pattern devel_basis
+sudo zypper in -y cmake wayland-protocols-devel wlroots-devel libinput-devel libxkbcommon-devel\ #dependenciees for DWL
+fcft-devel \ # dependency for dwlb
+bemenu foot git calc ddcutil wl-clipboard cliphist wget unzip libnotify-tools mako git sensors swaybg grim slurp imv wlr-randr greetd greetd-agreety \ # essential applications used in this build
+firefox htop rsync \ #other
+suse-fonts liberation-fonts dejavu-fonts #fallback fonts
 
-echo "installing essential applications"
-sudo zypper in -y bemenu foot calc ddcutil wl-clipboard cliphist wget unzip
+# wlroots: keep the locked 0.19, don't let zypper upgrade it
+if pkg-config --exists wlroots-0.19; then
+    echo "wlroots 0.19 already installed and locked, skipping"
+else
+    sudo zypper in -y libwlroots-0_19 wlroots-devel
+    sudo zypper addlock libwlroots-0_19 wlroots-devel
+fi
 
-# for notifications (mako is the notification daemon that will listen to libnotify)
-sudo zypper in -y libnotify-tools mako
-
-
-# applications to get started
-echo "installing some applications"
-sudo zypper in -y git firefox htop rsync
-echo "installing fallback fonts to avoid errors"
-sudo zypper in -y suse-fonts liberation-fonts dejavu-fonts
 
 echo "installing Jetbrains Mono Nerd Font"
 cd ~
@@ -33,10 +33,6 @@ mv JetBrainsMono ~/.local/share/fonts/
 fc-cache -f
 rm JetBrainsMono.zip
 
-
-echo "installing other packages I'm using"
-sudo zypper in -y sensors swaybg grim slurp imv wlr-randr #ttf-jetbrains-mono-nerd
-
 mkdir -p ~/Tech
 [ -d ~/Tech/dotfiles ] || git clone https://github.com/xonday/dotfiles.git ~/Tech/dotfiles
 cd ~/Tech/dotfiles/dwl
@@ -46,7 +42,6 @@ sudo make install
 echo "DWL successfully installed"
 
 echo "installing the bar (dwlb)"
-sudo zypper in -y fcft-devel # dependency
 cd ~/Tech/dotfiles/dwlb
 make
 sudo make install
@@ -56,7 +51,29 @@ cd ~/Tech/dotfiles/someblocks
 make 
 sudo make install
 
+echo "installing wlock"
+cd ~/Tech/dotfiles/wlock
+make CC=cc
+sudo make CC=cc install
+
 rsync -av ~/Tech/dotfiles/startup_scripts/ ~/.local/bin/
+
+echo "setting up greetd"
+sudo tee /etc/greetd/config.toml  > /dev/null <<'EOF'
+[terminal]
+vt = 1
+
+[initial_session]
+command = "/home/alex/.local/bin/start_dwl.sh"
+user = "alex"
+
+[default_session]
+command = "agreety --cmd /home/alex/.local/bin/start_dwl.sh"
+user = "greeter"
+EOF
+
+sudo systemctl enable greetd
+sudo systemctl set-default graphical.target
 
 echo "adding udev rule so brightness works correctly with external monitors"
 sudo groupadd -f i2c
@@ -75,6 +92,7 @@ echo "copying scripts dotfiles/scripts into ~/.local/bin"
 rsync -av ~/Tech/dotfiles/scripts/ ~/.local/bin/
 
 echo "installing  fonts for Chinese"
-sudo zypper in -y lxgw-wenkai-fonts lxgw-wenkai-screen-fonts
+sudo zypper in -y lxgw-wenkai-fonts lxgw-wenkai-screen-fonts #TODO: move to separate script
+
 
 echo "DWL installation completed successfully!"
