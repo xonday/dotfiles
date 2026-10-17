@@ -1,0 +1,10 @@
+image: archlinux
+packages:
+  - gcc
+  - meson
+sources:
+  - https://git.sr.ht/~kennylevinsen/autologin
+tasks:
+  - build: |
+      meson build autologin
+      ninja -C build
