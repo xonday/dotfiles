@@ -132,8 +132,8 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* commands */
 static const char *termcmd[] = { "foot", NULL };
 static const char *menucmd[] = { "bemenu_run_custom", NULL }; //using custom riced bemenu script
-static const char *upvol[] = { "sh", "-c", "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+; pkill -SIGRTMIN+11 someblocks", NULL };
-static const char *downvol[] = { "sh", "-c", "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%-; pkill -SIGRTMIN+11 someblocks", NULL };
+static const char *upvol[] = { "sh", "-c", "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%+; pkill -SIGRTMIN+11 someblocks", NULL };
+static const char *downvol[] = { "sh", "-c", "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 1%-; pkill -SIGRTMIN+11 someblocks", NULL };
 static const char *mutevol[] = { "sh", "-c", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -SIGRTMIN+11 someblocks", NULL };
 /* brightnessctl set +5% AND signal dwmblocks to update block 10 */
 static const char *brupcmd[] = { "sh", "-c", "brightnessctl set +9%; pkill -SIGRTMIN+10 someblocks", NULL };
